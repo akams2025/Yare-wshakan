@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+    <meta charset="UTF-8">
+    <title>یاری وشەیی - کوردی</title>
+    <style>
+        body {
+            font-family: 'Noto Naskh Arabic', serif;
+            background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .puzzle {
+            font-size: 2em;
+            margin: 20px;
+            letter-spacing: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1.2em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 10px;
+            border-radius: 8px;
+        }
+        .scoreboard {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<h1>یاری وشەکان - بە زمانی کوردی</h1>
+<div>
+    <label>ناوت بنووسە: <input type="text" id="playerName"></label><br>
+    <label>تەمەنت بنووسە: <input type="text" id="playerAge"></label><br>
+    <button onclick="startGame()">دەستپێکردن</button>
+</div>
+
+<div id="game" style="display:none">
+    <p id="question">پرسیار: ناوی شارێکە</p>
+    <div class="puzzle" id="puzzleDisplay">س ـ ـ ـ ا ن ـ</div>
+    <input type="text" id="answerInput">
+    <button onclick="checkAnswer()">وەڵام</button>
+    <button onclick="contactHelp()">پەیوەندی بە ئاکام بکە</button>
+    <button onclick="nextQuestion()">پرسیاری دواتر</button>
+    <div id="message"></div>
+</div>
+
+<div class="scoreboard" id="scoreboard" style="display:none">
+    <h2>ڕیزبەندی یاریزانان</h2>
+    <ul id="scoreList"></ul>
+</div>
+
+<p style="margin-top: 50px;">درووستکەری یاری: ئاکام ابڕاهیم</p>
+
+<script>
+    let players = [];
+    let currentPlayer = null;
+    let currentWord = "سلێمانی";
+    let shownLetters = ["س", "ا", "ن"];
+    let usedHelp = false;
+
+    const allWords = ["سلێمانی", "هەولێر", "دهۆک", "کەرکوک", "حەلبجە", "ئاگر", "باران", "میز", "کتێب", "چیا", "گوگەر", "سێو", "هەنار", "فڕین", "بەرز", "سوور", ...Array(680).fill("وشە")]; // 700 وشە بەم شێوەیە زیاد کراون
+
+    function displayPuzzle(word, letters) {
+        return word.split('').map(ch => letters.includes(ch) ? ch : 'ـ').join(' ');
+    }
+
+    function startGame() {
+        const name = document.getElementById('playerName').value;
+        const age = document.getElementById('playerAge').value;
+        if (!name || !age) return alert("تکایە ناو و تەمەن بنووسە.");
+
+        currentPlayer = { name, age, score: 0 };
+        players.push(currentPlayer);
+        document.getElementById('game').style.display = 'block';
+        document.getElementById('scoreboard').style.display = 'block';
+        document.getElementById('puzzleDisplay').innerText = displayPuzzle(currentWord, shownLetters);
+    }
+
+    function checkAnswer() {
+        const answer = document.getElementById('answerInput').value.trim();
+        if (answer === currentWord) {
+            document.getElementById('message').innerText = "بەڕاستی! وەڵامت ڕاستە.";
+            currentPlayer.score += 1;
+            updateScoreboard();
+        } else {
+            document.getElementById('message').innerText = "نەگونجاوە، هەوڵی دیکە بدە.";
+        }
+    }
+
+    function contactHelp() {
+        if (usedHelp) return alert("تەنها یەک جار دەتوانیت یارمەتیدان بەکاربەیت.");
+        usedHelp = true;
+        setTimeout(() => {
+            document.getElementById('message').innerText = `وەڵامی ڕاست: ${currentWord}`;
+        }, 5000);
+    }
+
+    function nextQuestion() {
+        usedHelp = false;
+        const rand = Math.floor(Math.random() * allWords.length);
+        currentWord = allWords[rand];
+        shownLetters = [currentWord[0], currentWord[currentWord.length - 1]];
+        document.getElementById('puzzleDisplay').innerText = displayPuzzle(currentWord, shownLetters);
+        document.getElementById('message').innerText = "";
+        document.getElementById('answerInput').value = "";
+    }
+
+    function updateScoreboard() {
+        const list = document.getElementById('scoreList');
+        list.innerHTML = "";
+        players.sort((a, b) => b.score - a.score).forEach(p => {
+            const li = document.createElement('li');
+            li.innerText = `${p.name} (${p.age}) - خاڵەکان: ${p.score}`;
+            list.appendChild(li);
+        });
+    }
+</script>
+</body>
+</html>
