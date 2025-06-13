@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="ku">
+<head>
+  <meta charset="UTF-8">
+  <title>کلمات متقاطعەی کوردی</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(to bottom right, #f0f8ff, #e6ffe6);
+      color: #333;
+      text-align: center;
+      padding: 2em;
+    }
+    input, button {
+      font-size: 1.2em;
+      margin: 0.5em;
+      padding: 0.5em 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #msg {
+      margin-top: 1em;
+      font-size: 1.3em;
+      color: #000066;
+    }
+    #leaderboard {
+      margin-top: 2em;
+      padding: 1em;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: inline-block;
+      text-align: left;
+    }
+    footer {
+      margin-top: 3em;
+      font-size: 1em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>کلمات متقاطعەی کوردی</h1>  <div id="signup">
+    <p><strong>خۆت تۆمار بکە:</strong></p>
+    <p>ناوت بنووسە: <input type="text" id="playerName" placeholder="ناوی خۆت" /></p>
+    <p>تەمەنت بنووسە: <input type="number" id="playerAge" placeholder="تەمەن" /></p>
+    <button onclick="registerPlayer()">تۆمارکردن</button>
+  </div>  <div id="game" style="display:none">
+    <p>وشەی ئەمجار: <strong id="current-word">دهۆک</strong></p>
+    <input type="text" id="answer" placeholder="وەڵامەکەت بنووسە..." />
+    <br/>
+    <button onclick="checkAnswer()">بڵێ وەڵامەکەم</button>
+    <button onclick="changeWord()">بڵێ پرسیار بگۆڕە</button>
+    <button onclick="callFriend()">بڵێ تەلەفۆن بۆ ئاکام</button>
+    <p id="msg"></p>
+  </div>  <div id="leaderboard">
+    <h3>ڕیزبەندی یاریزانان</h3>
+    <ul id="scores"></ul>
+  </div>  <footer>
+    درووستکەری یاری: ئاکام ئیبراهیم
+  </footer>  <script>
+    const words = [
+      "دهۆک", "هەولێر", "سلێمانی", "کەرکوک", "حەلبجە", "زاخۆ", "ڕانیە", "چەمچەماڵ", "خانەقین", "کویا",
+      "کویە", "کەلار", "بەردەسور", "ئاکرە", "شەقڵاوە", "پێنجوێن", "ئامێدی", "سەرسەنگ", "ئالان", "گەڵاڵە",
+      "کانی ماسی", "گەورە", "کانی دام", "سەید سادق", "گەرمیان", "مەریوان", "سەقز", "بانە", "سەنە", "بوکان",
+      "مهاباد", "پیرانشار", "نەغدە", "سردەشت", "تەمەڵە", "خۆڵەرا", "شاربازەر", "مەدەر", "کەرەداغ", "بازیان",
+      "ڕێگە", "خوێندنگە", "خانوو", "کتێب", "پەرتوک", "بازار", "چەپ", "ڕاست", "ڕێ", "شەقام", "کولان",
+      "کەمەر", "کەفش", "جوتیار", "زەوی", "ڕوو", "ئاسمان", "مانگ", "هێلکۆپتەر", "ئاو", "ئاوی گەرم",
+      "کافە", "قەپان", "بەش", "پیاو", "ژن", "من", "تۆ", "ئێمە", "ئێوە", "ئەوان", "کەرەستە", "پەنجە",
+      "دەست", "پێ", "چاو", "گوش", "لەش", "مێشک", "دەم", "لێو", "زبان", "ئاسن", "ئاسنخانە", "قەندیل",
+      "کوڵت", "قەڵا", "گەڕەک", "گوڵ", "باخ", "دار", "برس", "سەوز", "سوور", "ڕەش", "سپی", "زەرد",
+      "کەڵە", "کەنمە", "فەرە", "ڕەنگ", "تەق", "نارەنجی", "سەوزی تۆخ", "گەل", "خۆڵ", "دوور", "نزیك",
+      "نوێ", "کۆن", "تاڵ", "شیرین", "تۆز", "ترش", "گەرمی", "ساردی", "بێزار", "خۆشحاڵ", "پەڕلەمان",
+      "فەرمانبەر", "نووسەر", "مامۆستا", "قوربانی", "پەرەپێدان", "زانکۆ", "فەرهەنگ", "زمان", "زانست",
+      "فیزیاء", "کیمیا", "ژیناس", "کۆمەڵناسی", "ڕووحناسی", "فەلسەفە", "مەتەفیزیک", "هندسە", "ئامار",
+      "کۆمپیوتەر", "پڕۆگرام", "پەیام", "ئەندام", "ڕاوێژکار", "پەیڕەو", "ناوچە", "هەرێم", "بارودۆخ", "دەوڵەت",
+      "کوردستان", "عێراق", "فەرەنسا", "ئەلمانیا", "ئەنگلیز", "ئەمرێکا", "تورکیا", "ئێران", "سوریا", "رووسیا",
+      "چین", "هیندستان", "پاکستان", "ئافریقا", "ئاسیا", "ئۆسترالیا", "ئەوروپا", "ئانتارکتیکا", "ناوچەی سەرەتایی",
+      "کاتیپێکەوتن", "ئەندازیار", "پزیشک", "پەرستار", "زانا", "ڕووناکبیر", "بزوتنەوە", "هەریم", "کۆمەڵگا", "نووسین",
+      "ئەدەب", "شاعیر", "گۆرانی", "دەنگ", "میوزیک", "کەلار", "کۆمەڵگەیی", "کارگێڕی", "فەرمی", "خۆیی",
+      "بەڕێوەبەر", "دەستپێک", "کۆتایی", "نەرێن", "دەوام", "پەیوەندیدار", "زانیاری", "پەیوەندینامە", "کۆرس", "فاکولتە"
+    ];
+
+    let currentWord = words[Math.floor(Math.random() * words.length)];
+    let usedFeature = false;
+    let scores = {};
+
+    function registerPlayer() {
+      const name = document.getElementById('playerName').value.trim();
+      const age = document.getElementById('playerAge').value.trim();
+      if (!name || !age) {
+        alert("تکایە ناو و تەمەن بنووسە!");
+        return;
+      }
+      if (!(name in scores)) scores[name] = 0;
+      document.getElementById('signup').style.display = 'none';
+      document.getElementById('game').style.display = 'block';
+      updateLeaderboard();
+    }
+
+    function updateLeaderboard() {
+      const list = document.getElementById("scores");
+      list.innerHTML = "";
+      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      for (const [name, score] of sorted) {
+        const item = document.createElement("li");
+        item.textContent = `${name}: ${score} خاڵ`;
+        list.appendChild(item);
+      }
+    }
+
+    function getPlayer() {
+      const name = document.getElementById('playerName').value.trim();
+      if (!name) {
+        alert("تکایە ناو بنووسە!");
+        throw new Error("No player name");
+      }
+      if (!(name in scores)) scores[name] = 0;
+      return name;
+    }
+
+    function checkAnswer() {
+      const name = getPlayer();
+      const userInput = document.getElementById('answer').value.trim();
+      if (userInput === currentWord) {
+        document.getElementById('msg').textContent = 'بەڕاستی وەڵامەکەت دروستە ✔️';
+        scores[name] += 10;
+        updateLeaderboard();
+      } else {
+        document.getElementById('msg').textContent = 'هەڵەیە – هەوڵێکی تر بده.';
+      }
+    }
+
+    function changeWord() {
+      if (usedFeature) {
+        document.getElementById('msg').textContent = 'تەنها یەکجار دەتوانیت بەکارهێنیت.';
+        return;
+      }
+      usedFeature = true;
+      currentWord = words[Math.floor(Math.random() * words.length)];
+      document.getElementById('current-word').textContent = currentWord;
+      document.getElementById('msg').textContent = 'پرسیارەکە نوێ کرایەوە.';
+      document.getElementById('answer').value = '';
+    }
+
+    function callFriend() {
+      if (usedFeature) {
+        document.getElementById('msg').textContent = 'تەنها یەکجار دەتوانیت بەکارهێنیت.';
+        return;
+      }
+      usedFeature = true;
+      document.getElementById('msg').textContent = 'تەلەفۆن بۆ ئاکام کرا... چاوەڕوان بە...';
+      setTimeout(() => {
+        document.getElementById('msg').textContent = `وەڵامی ڕاست: ${currentWord}`;
+      }, 5000);
+    }
+  </script></body>
+</html>
