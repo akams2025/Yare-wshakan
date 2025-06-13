@@ -1,375 +1,122 @@
 <!DOCTYPE html>
 <html lang="ku">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>یاری کلمات متقاطعەی کوردی</title>
-<style>
-  @font-face {
-    font-family: 'NRT Bold';
-    src: url('https://cdn.jsdelivr.net/gh/alif-type/NRT-Fonts/NRT-Bold.ttf') format('truetype');
-  }
-  body {
-    font-family: 'NRT Bold', Arial, sans-serif;
-    background: linear-gradient(135deg, #b3e5fc, #81d4fa);
-    margin: 0; padding: 0;
-    display: flex; flex-direction: column; align-items: center;
-    min-height: 100vh;
-  }
-  header {
-    background-color: #0277bd;
-    color: white;
-    width: 100%;
-    padding: 1rem 0;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  main {
-    flex: 1;
-    max-width: 900px;
-    width: 100%;
-    background: white;
-    margin: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(2,119,189,0.3);
-    padding: 1rem;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(15, 30px);
-    grid-template-rows: repeat(15, 30px);
-    gap: 3px;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-  .cell {
-    width: 30px; height: 30px;
-    background-color: #e1f5fe;
-    border-radius: 4px;
-    text-align: center;
-    line-height: 30px;
-    font-size: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    user-select: none;
-    cursor: pointer;
-  }
-  .cell.empty {
-    background-color: #90a4ae;
-    cursor: default;
-  }
-  .cell input {
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-    font-family: 'NRT Bold', Arial, sans-serif;
-    font-size: 20px;
-    text-align: center;
-    background-color: transparent;
-    text-transform: uppercase;
-  }
-  .cell input:focus {
-    background-color: #bbdefb;
-  }
-  .clues {
-    margin-bottom: 1rem;
-  }
-  .clues h3 {
-    margin-top: 0.5rem;
-    margin-bottom: 0.3rem;
-    color: #0277bd;
-  }
-  .clue {
-    margin-bottom: 0.2rem;
-  }
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  button {
-    background-color: #0277bd;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'NRT Bold', Arial, sans-serif;
-  }
-  button:hover {
-    background-color: #015f8b;
-  }
-  .result {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #0277bd;
-    text-align: center;
-    margin-bottom: 1rem;
-    min-height: 1.5rem;
-  }
-  form {
-    margin-bottom: 1rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-  }
-  form input {
-    font-size: 1rem;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-family: 'NRT Bold', Arial, sans-serif;
-  }
-  form label {
-    font-weight: bold;
-    color: #0277bd;
-    font-family: 'NRT Bold', Arial, sans-serif;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  th, td {
-    border: 1px solid #0277bd;
-    padding: 0.3rem 0.6rem;
-    text-align: center;
-    font-family: 'NRT Bold', Arial, sans-serif;
-  }
-  th {
-    background-color: #81d4fa;
-  }
-  tbody tr:nth-child(odd) {
-    background-color: #e1f5fe;
-  }
-  footer {
-    background-color: #0277bd;
-    color: white;
-    text-align: center;
-    padding: 0.5rem 0;
-    font-family: 'NRT Bold', Arial, sans-serif;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>یاری ناوی شار - کلمات متقاطعە</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #cce3ff, #e8f0fe);
+      padding: 30px;
+      direction: rtl;
+      text-align: center;
+      color: #222;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #034078;
+    }
+    p {
+      font-size: 1.2rem;
+      margin: 15px 0;
+    }
+    #puzzle {
+      font-size: 2.5rem;
+      letter-spacing: 1.2rem;
+      user-select: none;
+      margin-bottom: 25px;
+      font-weight: 600;
+      color: #013a63;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    input[type="text"] {
+      font-size: 1.3rem;
+      padding: 10px;
+      width: 280px;
+      border-radius: 7px;
+      border: 2px solid #87a8c9;
+      text-align: center;
+      outline-color: #034078;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus {
+      border-color: #0078d7;
+    }
+    button {
+      font-size: 1.2rem;
+      padding: 10px 18px;
+      margin-right: 15px;
+      cursor: pointer;
+      border: none;
+      background-color: #0078d7;
+      color: white;
+      border-radius: 7px;
+      box-shadow: 0 3px 6px rgba(0,120,215,0.6);
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #005ea2;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body>
-<header>یاری کلمات متقاطعەی کوردی</header>
-<main>
 
-<!-- تۆمارکردنی ناوی یاریزان و تەمەنت -->
-<form id="playerForm">
-  <label for="playerName">ناوی یاریزان:</label>
-  <input type="text" id="playerName" required minlength="2" />
-  <label for="playerAge">تەمەنت:</label>
-  <input type="number" id="playerAge" required min="3" max="120" />
-  <button type="submit">تۆمارکردن</button>
-</form>
+  <h1>یاری ناوی شار</h1>
+  <p>پرسیار: ناوی شارێکە بە شێوازی بۆشایی زیرەوە:</p>
 
-<!-- نیشاندانی خاڵەکان -->
-<section id="scoreBoard" style="display:none;">
-  <h3>ڕیزبەندی یاریزانان</h3>
-  <table>
-    <thead><tr><th>ڕێز</th><th>ناو</th><th>تەمەنت</th><th>خاڵ</th></tr></thead>
-    <tbody id="scoreBody"></tbody>
-  </table>
-</section>
+  <div id="puzzle"></div>
 
-<!-- یاری -->
-<section id="gameSection" style="display:none;">
-  <div class="grid" id="crosswordGrid"></div>
+  <input type="text" id="answerInput" placeholder="ناوەکە بنووسە" autocomplete="off" />
+  <button onclick="checkAnswer()">وەڵام</button>
 
-  <div class="clues">
-    <h3>وەڵامدان بە وشەکان</h3>
-    <div id="cluesList"></div>
-  </div>
+  <div id="result"></div>
 
-  <div class="buttons">
-    <button id="checkAnswer">وەڵام</button>
-    <button id="changeQuestion">پرسیار بگۆڕە</button>
-  </div>
+  <script>
+    // ناوی شار و پیتە تایبەتی نیشان دەدرێن
+    const cityName = "سلێمانی";
+    const shownLetters = ['س', 'ا', 'ن'];
 
-  <div class="result" id="resultMessage"></div>
-</section>
-
-</main>
-<footer>درووستکەری یاری: ئاکام ئیبراهیم</footer>
-
-<script>
-  // وشەکان (زیاتر لە 500 وشە) بە فۆرماتی ناو، وەڵام، و شوێنەکان (x, y, direction)
-  const words = [
-    // ناوی شارەکان
-    {word: "دهۆک", hint: "ناوی شارەکە", x: 0, y: 0, dir: "across"},
-    {word: "سلێمانی", hint: "ناوی شارەکە", x: 0, y: 2, dir: "across"},
-    {word: "هەولێر", hint: "ناوی شارەکە", x: 0, y: 4, dir: "across"},
-    {word: "کرماشان", hint: "ناوی شارەکە", x: 0, y: 6, dir: "across"},
-    {word: "ڕۆژهەڵات", hint: "ناوی شارەکە", x: 0, y: 8, dir: "across"},
-    {word: "کەلار", hint: "ناوی شارەکە", x: 0, y: 10, dir: "across"},
-    {word: "چەمچەماڵ", hint: "ناوی شارەکە", x: 0, y: 12, dir: "across"},
-
-    // ناوی شتەکان
-    {word: "بازاڕ", hint: "ناوی شت", x: 2, y: 0, dir: "down"},
-    {word: "خانە", hint: "ناوی شت", x: 4, y: 0, dir: "down"},
-    {word: "گۆڕە", hint: "ناوی شت", x: 6, y: 0, dir: "down"},
-    {word: "کەناڵ", hint: "ناوی شت", x: 8, y: 0, dir: "down"},
-    {word: "شەقام", hint: "ناوی شت", x: 10, y: 0, dir: "down"},
-    {word: "گەڕان", hint: "ناوی شت", x: 12, y: 0, dir: "down"},
-
-    // ناوی کەل و پەل
-    {word: "مێشک", hint: "ناوی کەل", x: 14, y: 0, dir: "down"},
-    {word: "کەر", hint: "ناوی کەل", x: 14, y: 2, dir: "down"},
-    {word: "دڵڤەر", hint: "ناوی کەل", x: 14, y: 4, dir: "down"},
-    {word: "پێچەوانە", hint: "ناوی کەل", x: 14, y: 6, dir: "down"},
-    {word: "پێڵە", hint: "ناوی کەل", x: 14, y: 8, dir: "down"},
-    {word: "شەڕەنجام", hint: "ناوی کەل", x: 14, y: 10, dir: "down"},
-
-    // وشەکانی کوردی تر
-    {word: "دەنگ", hint: "وشەی کوردی", x: 5, y: 14, dir: "across"},
-    {word: "ڕووناکی", hint: "وشەی کوردی", x: 0, y: 14, dir: "across"},
-    {word: "تەما", hint: "وشەی کوردی", x: 7, y: 12, dir: "across"},
-    {word: "پیاو", hint: "وشەی کوردی", x: 11, y: 12, dir: "across"},
-    {word: "ژن", hint: "وشەی کوردی", x: 13, y: 12, dir: "across"},
-  ];
-
-  const gridSize = 15;
-  let currentQuestionIndex = 0;
-  let players = [];
-
-  // دروستکردنی گرید
-  function createGrid() {
-    const grid = document.getElementById('crosswordGrid');
-    grid.innerHTML = '';
-    for(let y=0; y<gridSize; y++) {
-      for(let x=0; x<gridSize; x++) {
-        const cell = document.createElement('div');
-        cell.classList.add('cell', 'empty');
-        cell.dataset.x = x;
-        cell.dataset.y = y;
-        cell.innerHTML = '<input maxlength="1" type="text" />';
-        grid.appendChild(cell);
-      }
-    }
-  }
-
-  // دانانی وشەکان لەسەر گرید
-  function placeWords() {
-    words.forEach(({word, x, y, dir}) => {
-      for(let i=0; i<word.length; i++) {
-        const cx = dir === 'across' ? x+i : x;
-        const cy = dir === 'down' ? y+i : y;
-        const cell = document.querySelector(`.cell[data-x="${cx}"][data-y="${cy}"]`);
-        if(cell) {
-          cell.classList.remove('empty');
-          cell.querySelector('input').dataset.answer = word[i];
+    // فانکشنی نیشاندانی بۆشایی ناوەکە
+    function displayPuzzle(word, shown) {
+      let puzzleStr = "";
+      for (let ch of word) {
+        if (shown.includes(ch)) {
+          puzzleStr += ch + " ";
+        } else {
+          puzzleStr += "_ ";
         }
       }
-    });
-  }
+      return puzzleStr.trim();
+    }
 
-  // نیشاندانی پرسیارەکان
-  function showQuestion(index) {
-    const clueBox = document.getElementById('cluesList');
-    clueBox.innerHTML = '';
-    const q = words[index];
-    if(!q) return;
-    const word = q.word.split('').join(' ـ ');
-    clueBox.innerHTML = `<div><b>${q.hint}:</b> ${word}</div>`;
-  }
+    // نیشاندانی بۆشایی لە پەڕەدا
+    const puzzleDiv = document.getElementById("puzzle");
+    puzzleDiv.textContent = displayPuzzle(cityName, shownLetters);
 
-  // چەک کردنی وەڵام
-  function checkAnswer() {
-    const q = words[currentQuestionIndex];
-    if(!q) return;
-    let correct = true;
-    for(let i=0; i<q.word.length; i++) {
-      const cx = q.dir === 'across' ? q.x + i : q.x;
-      const cy = q.dir === 'down' ? q.y + i : q.y;
-      const cell = document.querySelector(`.cell[data-x="${cx}"][data-y="${cy}"] input`);
-      if(!cell) continue;
-      if(cell.value.toLowerCase() !== q.word[i]) {
-        correct = false;
-        break;
+    // فانکشنی چیککردنی وەڵام
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answerInput").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      if (userAnswer === cityName) {
+        resultDiv.textContent = "بەڕاستی! وەڵامت ڕاستە.";
+        resultDiv.style.color = "green";
+      } else if(userAnswer === "") {
+        resultDiv.textContent = "تکایە ناوەکە بنووسە.";
+        resultDiv.style.color = "orange";
+      } else {
+        resultDiv.textContent = "نەگونجاوە، تکایە دووبارە هەوڵ بدە.";
+        resultDiv.style.color = "red";
       }
     }
-    const resultMessage = document.getElementById('resultMessage');
-    if(correct) {
-      resultMessage.textContent = 'وەڵامی ڕاستە!';
-      addPointsForCurrentPlayer(10);
-      setTimeout(() => {
-        resultMessage.textContent = '';
-        nextQuestion();
-      }, 5000);
-    } else {
-      resultMessage.textContent = 'هەوڵدەری تر بکە!';
-    }
-  }
+  </script>
 
-  // گۆڕینی پرسیار
-  function nextQuestion() {
-    currentQuestionIndex = (currentQuestionIndex + 1) % words.length;
-    clearGridInputs();
-    showQuestion(currentQuestionIndex);
-  }
-
-  // پاككردنی داخڵكردنەكانی هەموو خانەکان
-  function clearGridInputs() {
-    document.querySelectorAll('.cell input').forEach(input => input.value = '');
-  }
-
-  // زیادکردنی خاڵ بۆ یاریزانی ئێستا
-  function addPointsForCurrentPlayer(points) {
-    if(players.length === 0) return;
-    players[currentPlayerIndex].score += points;
-    updateScoreBoard();
-  }
-
-  // نیشاندانی خاڵەکان بە ڕیز
-  function updateScoreBoard() {
-    const tbody = document.getElementById('scoreBody');
-    tbody.innerHTML = '';
-    // ڕیزبەندی بە خاڵ بە نزیک بۆ دورترین
-    players.sort((a,b) => b.score - a.score);
-    players.forEach((p, i) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${i+1}</td><td>${p.name}</td><td>${p.age}</td><td>${p.score}</td>`;
-      tbody.appendChild(tr);
-    });
-    document.getElementById('scoreBoard').style.display = players.length > 0 ? 'block' : 'none';
-  }
-
-  let currentPlayerIndex = 0;
-
-  // فۆرم تۆمارکردنی یاریزان
-  document.getElementById('playerForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const name = document.getElementById('playerName').value.trim();
-    const age = parseInt(document.getElementById('playerAge').value);
-    if(name && age >= 3 && age <= 120) {
-      players.push({name, age, score: 0});
-      currentPlayerIndex = players.length -1;
-      document.getElementById('playerForm').style.display = 'none';
-      document.getElementById('gameSection').style.display = 'block';
-      updateScoreBoard();
-      createGrid();
-      placeWords();
-      showQuestion(currentQuestionIndex);
-    } else {
-      alert('تکایە ناو و تەمەنت بە دروستی بنووسە.');
-    }
-  });
-
-  // دوگمەی وەڵام
-  document.getElementById('checkAnswer').addEventListener('click', () => {
-    checkAnswer();
-  });
-
-  // دوگمەی گۆڕینی پرسیار
-  document.getElementById('changeQuestion').addEventListener('click', () => {
-    nextQuestion();
-  });
-
-</script>
 </body>
 </html>
